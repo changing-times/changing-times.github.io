@@ -1,0 +1,41 @@
+h1,h2,h3 {
+    text-align: center;
+}
+
+p, li, .footdef {
+    margin-top: 0.8rem;
+    line-height: 1.35;
+    margin-bottom: 0.8rem;
+}
+
+body{
+    font: 20px 'Georgia', Serif;
+    color: black;
+    font-weight: 100;
+    background-color: #dadada;
+    text-align: left;
+    max-width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+    text-rendering: optimizeLegibility;
+}
+
+footer {
+    font: 20px 'Georgia', Serif;
+    color: black;
+    font-weight: 100;
+    background-color: #dadada;
+    text-align: left;
+    max-width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+    text-rendering: optimizeLegibility;
+    clear: both;
+    position: relative;
+    height: 200px;
+}
+
+#links {
+    text-align: center;
+}
+

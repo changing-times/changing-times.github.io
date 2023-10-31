@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("ggplot2")
+install.packages("tidyr")
+install.packages("purrr")
+install.packages("readr")
+install.packages("sqldf")
+```
+
+#Libraries needed:
+
+```{r}
+library(dplyr)
+library(plyr)
+library(ggplot2)
+library(tidyr)
+library(purrr)
+library(readr)
+library(sqldf)
+```
+
+
+```{r}
+articles1 <- read_csv('publishers.csv')
+articles2 <- read_csv('paragraphs.csv')
+timedelta <- read_csv('timedelta.csv')
+
+articles = merge(x= articles2, y=articles1, by="id") ##only shows the ones with change by default
+articles_all = merge(x=articles2, y=articles1, by="id", all=T) ##shows all articles
+articles_all_distinct = sqldf("select distinct(id),publisher,url,paragraphs_changed,paragraphs_added,paragraphs_removed from articles_all")
+
+art_changed = sqldf("select id,publisher,edit_distance from articles where sentiment_1!=0 and sentiment_2!=0")
+
+articles_ss_neut_to_neg = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1>1 and sentiment_1<2 and sentiment_2<1 and sentiment_1!=0 and sentiment_2!=0")
+articles_ss_neg_to_neg = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1<1 and sentiment_2<1 and sentiment_1!=0 and sentiment_2!=0")
+articles_ss_pos_to_neg = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1>2 and sentiment_2<1 and sentiment_1!=0 and sentiment_2!=0")
+
+articles_ss_neut_to_pos = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1>1 and sentiment_1<2 and sentiment_2>2 and sentiment_1!=0 and sentiment_2!=0")
+articles_ss_neg_to_pos = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1<1 and sentiment_2>2 and sentiment_1!=0 and sentiment_2!=0")
+articles_ss_pos_to_pos = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1>2 and sentiment_2>2 and sentiment_1!=0 and sentiment_2!=0")
+
+articles_ss_neut_to_neut = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1>1 and sentiment_1<2 and sentiment_2>1 and sentiment_2<2 and sentiment_1!=0 and sentiment_2!=0")
+articles_ss_neg_to_neut = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1<1 and sentiment_2>1 and sentiment_2<2 and sentiment_1!=0 and sentiment_2!=0")
+articles_ss_pos_to_neut = sqldf("select id,sentiment_1,sentiment_2 from articles where sentiment_1>2 and sentiment_2>1 and sentiment_2<2 and sentiment_1!=0 and sentiment_2!=0")
+
+```

@@ -1,0 +1,63 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("ggplot2")
+install.packages("tidyr")
+install.packages("purrr")
+install.packages("readr")
+install.packages("sqldf")
+```
+
+#Libraries needed:
+
+```{r}
+library(dplyr)
+library(plyr)
+library(ggplot2)
+library(tidyr)
+library(purrr)
+library(readr)
+library(sqldf)
+```
+
+
+```{r}
+articles1 <- read_csv('publishers.csv')
+articles2 <- read_csv('paragraphs.csv')
+timedelta <- read_csv('timedelta.csv')
+
+articles = merge(x= articles2, y=articles1, by="id") ##only shows the ones with change by default
+articles_all = merge(x=articles2, y=articles1, by="id", all=T) ##shows all articles
+
+art_disappeared = sqldf("select distinct(id),publisher,category from articles where paragraphs_removed>paragraphs_added")
+art_disappeared_count<-art_disappeared%>%group_by(publisher,category)%>%dplyr::mutate(count=n())
+art_disappeared_count <-art_disappeared_count%>%distinct(publisher,category,.keep_all=TRUE)
+#art_disappeared_count$total_count <- art_changed_count$count
+
+art_changed_count= sqldf("select distinct(id),publisher,category from articles")
+art_changed_count <-na.omit(art_changed_count)
+art_changed_count<-art_changed_count%>%group_by(publisher)%>%dplyr::mutate(count=n())
+art_changed_count<-sqldf("select distinct(id),publisher,category,count from art_changed_count")
+art_changed_count<- art_changed_count%>%distinct(publisher,category, .keep_all=TRUE)
+df=merge(x=art_disappeared_count,y=art_changed_count,by=c("publisher","category"))
+df<-transform(df, Proportion=(count.x/count.y)*100)
+
+art_changed_all= sqldf("select distinct(id),publisher,category from articles_all")
+art_changed_all <-na.omit(art_changed_all)
+art_changed_all<-art_changed_all%>%group_by(publisher)%>%dplyr::mutate(count=n())
+art_changed_all<-sqldf("select distinct(id),publisher,category,count from art_changed_all")
+art_changed_all<- art_changed_all%>%distinct(publisher,category, .keep_all=TRUE)
+df2=merge(x=art_disappeared_count,y=art_changed_all,by=c("publisher","category"))
+df2<-transform(df2, Proportion=(count.x/count.y)*100)
+
+ggplot(data=df,mapping=aes(x=publisher,y=Proportion,fill=category))+geom_bar(stat="identity")+ylab("Proportion (%)")+theme_bw()+theme(legend.position="top",axis.title=element_text(face="bold",size=14),axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8),legend.title=element_text(face="bold",size=14),legend.text=element_text(size=10))
+
+ggplot(data=df2,mapping=aes(x=publisher,y=Proportion,fill=category))+geom_bar(stat="identity")+ylab("Proportion (%)")+theme_bw()+theme(legend.position="top",axis.title=element_text(face="bold",size=14),axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8),legend.title=element_text(face="bold",size=14),legend.text=element_text(size=10))
+
+
+```

@@ -1,0 +1,42 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("ggplot2")
+install.packages("tidyr")
+install.packages("purrr")
+install.packages("readr")
+install.packages("sqldf")
+```
+
+#Libraries needed:
+
+```{r}
+library(dplyr)
+library(plyr)
+library(ggplot2)
+library(tidyr)
+library(purrr)
+library(readr)
+library(sqldf)
+```
+
+
+```{r}
+articles1 <- read_csv('publishers.csv')
+articles2 <- read_csv('paragraphs.csv')
+timedelta <- read_csv('timedelta.csv')
+
+articles = merge(x= articles2, y=articles1, by="id") ##only shows the ones with change by default
+articles_all = merge(x=articles2, y=articles1, by="id", all=T) ##shows all articles
+
+art_delta_unq_sm = sqldf("select distinct(id),delta from timedelta where delta<20")
+
+ggplot(art_delta_unq_sm,aes(x=delta))+stat_ecdf(geom = "step")+theme_bw()+ylab("Articles that exhibit change (%)")+xlab("Days since publication")+theme(axis.title = element_text(face="bold",size=13),axis.text = element_text(size=16))+theme(aspect.ratio=1/3)
+
+
+```

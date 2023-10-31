@@ -1,0 +1,45 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("ggplot2")
+install.packages("tidyr")
+install.packages("purrr")
+install.packages("readr")
+install.packages("sqldf")
+```
+
+#Libraries needed:
+
+```{r}
+library(dplyr)
+library(plyr)
+library(ggplot2)
+library(tidyr)
+library(purrr)
+library(readr)
+library(sqldf)
+```
+
+
+```{r}
+articles1 <- read_csv('publishers.csv')
+articles2 <- read_csv('paragraphs.csv')
+timedelta <- read_csv('timedelta.csv')
+
+articles = merge(x= articles2, y=articles1, by="id") ##only shows the ones with change by default
+articles_all = merge(x=articles2, y=articles1, by="id", all=T) ##shows all articles
+
+articles_live_upd = sqldf("select distinct(id),paragraphs_removed,paragraphs_added from articles_all where live_update==1")
+art_changed = sqldf("select id,publisher,edit_distance,live_update,`original word count`,word_count_change from articles where sentiment_1!=0 and sentiment_2!=0")
+art_changed$new_words<-art_changed$`original word count`+art_changed$word_count_change
+art_changed$relative_new_words<-art_changed$`original word count`/art_changed$new_words
+
+ggplot(art_changed,aes(x=`original word count`,y=new_words,color=live_update))+geom_jitter()+xlim(0,20000)+ylim(0,20000)+theme_bw()+ylab("post-edit word count")+theme(axis.title=element_text(face="bold",size=14),axis.text.x=element_text(size=10))+geom_abline(slope=1, intercept=-15,colour='#E41A1C')
+
+
+```

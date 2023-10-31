@@ -1,0 +1,8 @@
+@inproceedings{tsoukaladelis2023times,
+  title={The Times They Are A-Changin': Characterizing Post-Publication Changes to Online News},
+  author={Tsoukaladelis, Chris and Kondracki, Brian and Balasubramanian, Niranjan and Nikiforakis, Nick},
+  booktitle={2024 IEEE Symposium on Security and Privacy (SP)},
+  pages={33--33},
+  year={2023},
+  organization={IEEE Computer Society}
+}
