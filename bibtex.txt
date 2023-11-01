@@ -1,8 +1,17 @@
-@inproceedings{tsoukaladelis2023times,
-  title={The Times They Are A-Changin': Characterizing Post-Publication Changes to Online News},
-  author={Tsoukaladelis, Chris and Kondracki, Brian and Balasubramanian, Niranjan and Nikiforakis, Nick},
-  booktitle={2024 IEEE Symposium on Security and Privacy (SP)},
-  pages={33--33},
-  year={2023},
-  organization={IEEE Computer Society}
+@INPROCEEDINGS {,
+author = {C. Tsoukaladelis and B. Kondracki and N. Balasubramanian and N. Nikiforakis},
+booktitle = {2024 IEEE Symposium on Security and Privacy (SP)},
+title = {The Times They Are A-Changin&#x27;: Characterizing Post-Publication Changes to Online News},
+year = {2024},
+volume = {},
+issn = {2375-1207},
+pages = {33-33},
+abstract = {The current news landscape is in the middle of a major transition. Digital news are quickly overtaking legacy media (such as, newspapers and TV programs), offering a slew of benefits to consumers including ease and immediacy of access. They also, however, allow publishers to arbitrarily modify the articles they publish, at any time after the article has been released. Little is known about how often this happens and to what extent these post-publication edits change an article’s original message. In this paper, we shine light to this previously ignored phenomenon by collecting and analyzing a corpus of more than 600k online news articles, published by tens of U.S. news publishers over a period of nine months. We discover that 165k articles exhibit post-publication changes and use natural language processing tools to identify the magnitude of these changes and their effect. Among others, we find that different publishers modify their articles at different rates, with a publisher’s ranking and political bias affecting the frequency of changes and that over 15% of changed paragraphs do not “follow” their original versions. Finally, we discover that most of the evaluated publishers do not properly note these changes to their articles, using non-descriptive notices and updated timestamps that cannot be used by readers to assess what has changed.},
+keywords = {},
+doi = {10.1109/SP54263.2024.00033},
+url = {https://doi.ieeecomputersociety.org/10.1109/SP54263.2024.00033},
+publisher = {IEEE Computer Society},
+address = {Los Alamitos, CA, USA},
+month = {may}
 }
+
